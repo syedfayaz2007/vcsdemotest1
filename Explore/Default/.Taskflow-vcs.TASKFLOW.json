@@ -1,0 +1,24 @@
+{
+  "objectInfo" : {
+    "id" : "9sorqiLv3kGkwcxzz3T8kc",
+    "name" : "Taskflow-vcs",
+    "type" : "TASKFLOW",
+    "metadata" : {
+      "modelVersion" : {
+        "major" : 1,
+        "minor" : 0
+      },
+      "repoInfo" : {
+        "repoHandle" : "lD2pHALVYxWPQE8-gt-106557-2023-06-14T03:57:10.186Z::tf.xml"
+      },
+      "contextAttributes" : null,
+      "additionalInfo" : {
+        "description" : "",
+        "contentType" : "application/json; charset=utf-8",
+        "documentState" : "VALID"
+      }
+    }
+  },
+  "dataFileExtension" : "xml",
+  "objectRefs" : [ ]
+}
