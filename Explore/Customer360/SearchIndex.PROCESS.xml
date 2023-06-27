@@ -1,0 +1,128 @@
+<aetgt:getResponse xmlns:aetgt="http://schemas.active-endpoints.com/appmodules/repository/2010/10/avrepository.xsd"
+                   xmlns:types1="http://schemas.active-endpoints.com/appmodules/repository/2010/10/avrepository.xsd">
+   <types1:Item>
+      <types1:EntryId>V0HnJKoJBUhtyco-gt-5675-2023-06-14T03:15:27.68Z::pd.xml</types1:EntryId>
+      <types1:Name>SearchIndex</types1:Name>
+      <types1:MimeType>application/xml+process</types1:MimeType>
+      <types1:Description/>
+      <types1:AppliesTo/>
+      <types1:Tags/>
+      <types1:VersionLabel>1.0</types1:VersionLabel>
+      <types1:State>CURRENT</types1:State>
+      <types1:ProcessGroup/>
+      <types1:CreatedBy>bundle-license-notifier</types1:CreatedBy>
+      <types1:CreationDate>2023-06-14T03:15:28Z</types1:CreationDate>
+      <types1:ModifiedBy/>
+      <types1:PublicationStatus>published</types1:PublicationStatus>
+      <types1:PublishedBy>bundle-license-notifier</types1:PublishedBy>
+      <types1:PublicationDate>2023-06-14T03:15:38Z</types1:PublicationDate>
+      <types1:PublishedContributionId>project:/spi.SearchIndex/SearchIndex.pd.xml</types1:PublishedContributionId>
+      <types1:AutosaveExists>false</types1:AutosaveExists>
+      <types1:Entry>
+         <process xmlns="http://schemas.active-endpoints.com/appmodules/screenflow/2010/10/avosScreenflow.xsd"
+                  xmlns:tfm="http://schemas.active-endpoints.com/appmodules/screenflow/2021/04/taskflowModel.xsd"
+                  xmlns:list="urn:activevos:spi:list:functions"
+                  displayName="SearchIndex"
+                  name="SearchIndex"
+                  overrideAPIName="true">
+            <parameterSet xmlns="http://schemas.active-endpoints.com/appmodules/screenflow/2021/04/taskflowModel.xsd"/>
+            <appliesTo/>
+            <description/>
+            <tags/>
+            <generator>Informatica Process Designer 11</generator>
+            <input>
+               <parameter description=""
+                          name="jobDefinitionId"
+                          required="true"
+                          type="string">
+                  <options>
+                     <option name="required">false</option>
+                  </options>
+               </parameter>
+               <parameter description=""
+                          name="runtimeParameters"
+                          required="true"
+                          type="objectlist">
+                  <options>
+                     <option name="referenceTo">$po:$any</option>
+                     <option hide="true" name="multiSelect">true</option>
+                     <option name="required">false</option>
+                     <option name="isCopy">true</option>
+                  </options>
+               </parameter>
+               <parameter description=""
+                          name="targetEntities"
+                          required="true"
+                          type="objectlist">
+                  <options>
+                     <option name="referenceTo">$po:$any</option>
+                     <option hide="true" name="multiSelect">true</option>
+                     <option name="required">false</option>
+                     <option name="isCopy">true</option>
+                  </options>
+               </parameter>
+               <parameter description="" name="tenantId1" type="string">
+                  <options>
+                     <option name="required">false</option>
+                  </options>
+               </parameter>
+            </input>
+            <output>
+               <field description="" name="jobInstanceId" type="string">
+                  <options>
+                     <option name="required">false</option>
+                  </options>
+               </field>
+               <field description="" name="tenantId" type="string">
+                  <options>
+                     <option name="required">false</option>
+                  </options>
+               </field>
+            </output>
+            <notes/>
+            <deployment suspendOnFault="false" tracingLevel="none">
+               <rest>
+                  <allowedRoles>
+                     <role>Admin</role>
+                     <role>Designer</role>
+                     <role>Business360ProcessExecutor</role>
+                  </allowedRoles>
+               </rest>
+            </deployment>
+            <flow id="a">
+               <start id="b">
+                  <link id="ku5bqgbd" targetId="ktv97dwi"/>
+               </start>
+               <service id="ktv97dwi">
+                  <title>Start Job</title>
+                  <serviceName>StartJob</serviceName>
+                  <serviceGUID/>
+                  <serviceInput>
+                     <parameter name="jobDefinitionId" source="field" updatable="true">input.jobDefinitionId</parameter>
+                     <parameter name="runtimeParameters" source="field" updatable="true">input.runtimeParameters</parameter>
+                  </serviceInput>
+                  <link id="ku5bqgbp" targetId="ku5bqgbo"/>
+               </service>
+               <service id="ktv97dwp">
+                  <title>Search Index</title>
+                  <serviceName>SearchIndexStep</serviceName>
+                  <serviceGUID/>
+                  <serviceInput>
+                     <parameter name="jobInstanceId" source="field" updatable="true">output.jobInstanceId</parameter>
+                     <parameter name="tenantId" source="field" updatable="true">input.tenantId1</parameter>
+                  </serviceInput>
+                  <link id="ku2sbafc" targetId="c"/>
+               </service>
+               <milestone id="ku5bqgbo">
+                  <title>Accepted</title>
+                  <link id="ku5bqgbq" targetId="ktv97dwp"/>
+               </milestone>
+               <end id="c"/>
+            </flow>
+         </process>
+      </types1:Entry>
+      <types1:GUID>6YAhg9uoQdEgUhj3sG1Zo3</types1:GUID>
+      <types1:DisplayName>SearchIndex</types1:DisplayName>
+   </types1:Item>
+   <types1:CurrentServerDateTime>2023-06-27T05:29:51.121Z</types1:CurrentServerDateTime>
+</aetgt:getResponse>

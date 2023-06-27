@@ -1,0 +1,24 @@
+{
+  "objectInfo" : {
+    "id" : "e58OxTd93m7e8riIP1Em86",
+    "name" : "GenerateMergeTasks",
+    "type" : "PROCESS",
+    "metadata" : {
+      "modelVersion" : {
+        "major" : 1,
+        "minor" : 0
+      },
+      "repoInfo" : {
+        "repoHandle" : "95Xt1T4W6jKsJlv-gt-7304-2023-06-14T03:15:26.969Z::pd.xml"
+      },
+      "contextAttributes" : null,
+      "additionalInfo" : {
+        "description" : "",
+        "contentType" : "application/json; charset=utf-8",
+        "documentState" : "VALID"
+      }
+    }
+  },
+  "dataFileExtension" : "xml",
+  "objectRefs" : [ ]
+}

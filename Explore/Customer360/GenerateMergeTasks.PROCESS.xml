@@ -1,0 +1,156 @@
+<aetgt:getResponse xmlns:aetgt="http://schemas.active-endpoints.com/appmodules/repository/2010/10/avrepository.xsd"
+                   xmlns:types1="http://schemas.active-endpoints.com/appmodules/repository/2010/10/avrepository.xsd">
+   <types1:Item>
+      <types1:EntryId>95Xt1T4W6jKsJlv-gt-7304-2023-06-14T03:15:26.969Z::pd.xml</types1:EntryId>
+      <types1:Name>GenerateMergeTasks</types1:Name>
+      <types1:MimeType>application/xml+process</types1:MimeType>
+      <types1:Description/>
+      <types1:AppliesTo/>
+      <types1:Tags/>
+      <types1:VersionLabel>1.0</types1:VersionLabel>
+      <types1:State>CURRENT</types1:State>
+      <types1:ProcessGroup/>
+      <types1:CreatedBy>bundle-license-notifier</types1:CreatedBy>
+      <types1:CreationDate>2023-06-14T03:15:27Z</types1:CreationDate>
+      <types1:ModifiedBy/>
+      <types1:PublicationStatus>published</types1:PublicationStatus>
+      <types1:PublishedBy>bundle-license-notifier</types1:PublishedBy>
+      <types1:PublicationDate>2023-06-14T03:15:32Z</types1:PublicationDate>
+      <types1:PublishedContributionId>project:/spi.GenerateMergeTasks/GenerateMergeTasks.pd.xml</types1:PublishedContributionId>
+      <types1:AutosaveExists>false</types1:AutosaveExists>
+      <types1:Entry>
+         <process xmlns="http://schemas.active-endpoints.com/appmodules/screenflow/2010/10/avosScreenflow.xsd"
+                  xmlns:list="urn:activevos:spi:list:functions"
+                  displayName="GenerateMergeTasks"
+                  name="GenerateMergeTasks"
+                  overrideAPIName="false">
+            <appliesTo/>
+            <description/>
+            <tags/>
+            <generator>Informatica Process Designer 11</generator>
+            <input>
+               <parameter description="Job Definition Id"
+                          name="jobDefinitionId"
+                          required="true"
+                          type="string">
+                  <options>
+                     <option name="required">false</option>
+                  </options>
+               </parameter>
+               <parameter description="Run Time Parameter"
+                          name="runtimeParameters"
+                          required="true"
+                          type="objectlist">
+                  <options>
+                     <option name="referenceTo">$po:$any</option>
+                     <option hide="true" name="multiSelect">true</option>
+                     <option name="required">false</option>
+                     <option name="isCopy">true</option>
+                  </options>
+               </parameter>
+            </input>
+            <output>
+               <field description="Job Instance Id" name="jobInstanceId" type="string">
+                  <options>
+                     <option name="required">false</option>
+                  </options>
+               </field>
+            </output>
+            <notes/>
+            <deployment suspendOnFault="false" tracingLevel="none">
+               <rest>
+                  <allowedRoles>
+                     <role>Admin</role>
+                     <role>Designer</role>
+                     <role>Business360ProcessExecutor</role>
+                  </allowedRoles>
+               </rest>
+            </deployment>
+            <flow id="a">
+               <start id="b">
+                  <link id="kf7eapl3" targetId="kf7eapl2"/>
+               </start>
+               <service id="kf7eapl2">
+                  <title>Start Job</title>
+                  <serviceName>StartJob</serviceName>
+                  <serviceGUID/>
+                  <serviceInput>
+                     <parameter name="jobDefinitionId" source="field">input.jobDefinitionId</parameter>
+                     <parameter name="runtimeParameters" source="field">input.runtimeParameters</parameter>
+                  </serviceInput>
+                  <link id="kf7eaplc" targetId="kgs6188b"/>
+               </service>
+               <service id="kf7eaplk">
+                  <title>End Job</title>
+                  <serviceName>EndJob</serviceName>
+                  <serviceGUID/>
+                  <serviceInput>
+                     <parameter name="jobInstanceId" source="field" updatable="true">output.jobInstanceId</parameter>
+                  </serviceInput>
+                  <link id="kf7eaplm" targetId="c"/>
+               </service>
+               <eventContainer id="kgs6188b">
+                  <service id="kf7eaplb">
+                     <title>Generate Merge Tasks</title>
+                     <serviceName>PotentialMatches</serviceName>
+                     <serviceGUID/>
+                     <serviceInput>
+                        <parameter name="jobInstanceId" source="field">output.jobInstanceId</parameter>
+                     </serviceInput>
+                  </service>
+                  <flow id="kgs6188d">
+                     <link id="kgs6188e" targetId="kgs6188b" type="containerLink"/>
+                  </flow>
+                  <flow id="kgs6188g">
+                     <service id="kgs6188l">
+                        <title>End Step</title>
+                        <serviceName>EndStep</serviceName>
+                        <serviceGUID/>
+                        <serviceInput>
+                           <parameter name="skipCleanup" source="constant">false</parameter>
+                           <parameter name="jobInstanceId" source="field" updatable="true">output.jobInstanceId</parameter>
+                           <parameter name="status" source="constant">FAILED</parameter>
+                           <parameter name="processName" source="constant">GenerateMergeTasks</parameter>
+                        </serviceInput>
+                        <link id="kgs618av" targetId="kgs618au"/>
+                     </service>
+                     <throw id="kgs618au">
+                        <title>Throw 1</title>
+                        <throwInput>
+                           <parameter name="code" source="field" updatable="true">output.faultInfo[1]/code</parameter>
+                           <parameter name="detail" source="field" updatable="true">output.faultInfo[1]/detail</parameter>
+                           <parameter name="reason" source="field" updatable="true">output.faultInfo[1]/reason</parameter>
+                        </throwInput>
+                     </throw>
+                  </flow>
+                  <link id="kgs6188c" targetId="kgs6188d" type="containerLink"/>
+                  <link id="kf7eapll" targetId="kf7eaplk"/>
+                  <events>
+                     <catch faultField="faultInfo" id="kgs6188a" interrupting="true">
+                        <link id="kgs6188f" targetId="kgs6188g" type="containerLink"/>
+                     </catch>
+                  </events>
+               </eventContainer>
+               <end id="c"/>
+            </flow>
+         </process>
+         <ns1:sample-data-sets xmlns:ns1="http://schemas.active-endpoints.com/appmodules/repository/2010/10/sampleData.xsd">
+            <ns1:SampleData>
+               <ns1:Id>2b2813ee-f3c3-448b-a14f-ff84dc174763</ns1:Id>
+               <ns1:Name>test</ns1:Name>
+               <ns1:CreatedBy>bundle-license-notifier</ns1:CreatedBy>
+               <ns1:CreationDate>2023-06-14T03:15:27Z</ns1:CreationDate>
+               <ns1:ModifiedBy>bundle-license-notifier</ns1:ModifiedBy>
+               <ns1:ModificationDate>2023-06-14T03:15:27Z</ns1:ModificationDate>
+               <ns1:Data format="json">{
+    "jobDefinitionId":"c360.generateMergeTasksJobDef",
+    "runtimeParameters":[]
+}</ns1:Data>
+            </ns1:SampleData>
+         </ns1:sample-data-sets>
+      </types1:Entry>
+      <types1:GUID>e58OxTd93m7e8riIP1Em86</types1:GUID>
+      <types1:DisplayName>GenerateMergeTasks</types1:DisplayName>
+   </types1:Item>
+   <types1:CurrentServerDateTime>2023-06-27T05:29:51.034Z</types1:CurrentServerDateTime>
+</aetgt:getResponse>

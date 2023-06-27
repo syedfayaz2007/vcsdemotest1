@@ -1,0 +1,231 @@
+<aetgt:getResponse xmlns:aetgt="http://schemas.active-endpoints.com/appmodules/repository/2010/10/avrepository.xsd"
+                   xmlns:types1="http://schemas.active-endpoints.com/appmodules/repository/2010/10/avrepository.xsd">
+   <types1:Item>
+      <types1:EntryId>ZTNkSmbduaa-gt-7328-2023-06-14T03:15:28.35Z::pd.xml</types1:EntryId>
+      <types1:Name>MDMFlowFileImportDQInternal</types1:Name>
+      <types1:ParentFlowIds>RsPFn2H0Fdw8jIw-gt-7340-2023-06-14T03:15:28.702Z::pd.xml</types1:ParentFlowIds>
+      <types1:MimeType>application/xml+process</types1:MimeType>
+      <types1:Description/>
+      <types1:AppliesTo/>
+      <types1:Tags/>
+      <types1:VersionLabel>1.0</types1:VersionLabel>
+      <types1:State>CURRENT</types1:State>
+      <types1:ProcessGroup/>
+      <types1:CreatedBy>bundle-license-notifier</types1:CreatedBy>
+      <types1:CreationDate>2023-06-14T03:15:28Z</types1:CreationDate>
+      <types1:ModifiedBy/>
+      <types1:PublicationStatus>published</types1:PublicationStatus>
+      <types1:PublishedBy>bundle-license-notifier</types1:PublishedBy>
+      <types1:PublicationDate>2023-06-14T03:15:44Z</types1:PublicationDate>
+      <types1:PublishedContributionId>project:/spi.MDMFlowFileImportDQInternal/MDMFlowFileImportDQInternal.pd.xml</types1:PublishedContributionId>
+      <types1:AutosaveExists>false</types1:AutosaveExists>
+      <types1:Entry>
+         <process xmlns="http://schemas.active-endpoints.com/appmodules/screenflow/2010/10/avosScreenflow.xsd"
+                  xmlns:list="urn:activevos:spi:list:functions"
+                  displayName="MDMFlowFileImportDQInternal"
+                  name="MDMFlowFileImportDQInternal"
+                  overrideAPIName="true">
+            <appliesTo/>
+            <description/>
+            <tags/>
+            <generator>Informatica Process Designer 11</generator>
+            <input>
+               <parameter description=""
+                          name="jobInstanceIdValue"
+                          required="true"
+                          type="string">
+                  <options>
+                     <option name="required">false</option>
+                  </options>
+               </parameter>
+               <parameter description=""
+                          name="skipCleanup"
+                          required="true"
+                          type="boolean">
+                  <options>
+                     <option name="defaultvalue">false</option>
+                     <option name="boolean_show_as">checkbox</option>
+                     <option name="required">false</option>
+                  </options>
+               </parameter>
+            </input>
+            <output>
+               <field description="" name="fault" type="string">
+                  <options>
+                     <option name="required">false</option>
+                  </options>
+               </field>
+            </output>
+            <notes/>
+            <deployment suspendOnFault="false" tracingLevel="normal">
+               <rest/>
+            </deployment>
+            <flow id="a">
+               <start id="b">
+                  <link id="k76imchk" targetId="k76imchj"/>
+               </start>
+               <service id="k76imchj">
+                  <title>File Import Staging</title>
+                  <serviceName>FileImport</serviceName>
+                  <serviceGUID/>
+                  <serviceInput>
+                     <parameter name="jobInstanceId" source="field" updatable="true">input.jobInstanceIdValue</parameter>
+                  </serviceInput>
+                  <link id="k76imchl" targetId="k76imcfo"/>
+               </service>
+               <container id="k76imcfo" type="exclusive">
+                  <title>Status</title>
+                  <flow id="k76imcfp">
+                     <eventContainer id="k88bxw9m">
+                        <subflow id="k76imcfq">
+                           <title>Ingress</title>
+                           <subflowGUID>8iTuS52CyRGlOL8l2gx1iV</subflowGUID>
+                           <subflowPath>Ingress</subflowPath>
+                           <runForEach>false</runForEach>
+                           <input>
+                              <parameter name="jobInstanceId" source="field" updatable="true">input.jobInstanceIdValue</parameter>
+                              <parameter name="isFileImportJob" source="constant" updatable="true">true</parameter>
+                           </input>
+                           <outputDef/>
+                        </subflow>
+                        <flow id="k88bxw9o">
+                           <link id="k88bxw9p" targetId="k88bxw9m" type="containerLink"/>
+                        </flow>
+                        <flow id="k88bxw9r">
+                           <throw id="k88bxwa1">
+                              <title>Throw 2</title>
+                              <throwInput>
+                                 <parameter name="code" source="constant" updatable="true">CAI_FI_002</parameter>
+                                 <parameter name="detail" source="constant" updatable="true">Ingress Failed</parameter>
+                                 <parameter name="reason" source="field" updatable="true">output.faultInfo[1]/reason</parameter>
+                              </throwInput>
+                           </throw>
+                        </flow>
+                        <link id="k88bxw9n" targetId="k88bxw9o" type="containerLink"/>
+                        <link id="k76imcg8" targetId="k884y0ls"/>
+                        <events>
+                           <catch faultField="faultInfo" id="k88bxw9h" interrupting="true">
+                              <link id="k88bxw9q" targetId="k88bxw9r" type="containerLink"/>
+                           </catch>
+                        </events>
+                     </eventContainer>
+                     <eventContainer id="k884y0ls">
+                        <service id="k76imcfr">
+                           <title>Load</title>
+                           <serviceName>Load</serviceName>
+                           <serviceGUID/>
+                           <serviceInput>
+                              <parameter name="jobInstanceId" source="field" updatable="true">input.jobInstanceIdValue</parameter>
+                           </serviceInput>
+                        </service>
+                        <flow id="k884y0lu">
+                           <link id="k884y0lv" targetId="k884y0ls" type="containerLink"/>
+                        </flow>
+                        <flow id="k884y0lx">
+                           <throw id="k88bxwa9">
+                              <title>Throw 3</title>
+                              <throwInput>
+                                 <parameter name="code" source="constant" updatable="true">CAI_FI_003</parameter>
+                                 <parameter name="detail" source="constant" updatable="true">Load Step Failed</parameter>
+                                 <parameter name="reason" source="field" updatable="true">output.faultInfo[1]/reason</parameter>
+                              </throwInput>
+                           </throw>
+                        </flow>
+                        <link id="k884y0lt" targetId="k884y0lu" type="containerLink"/>
+                        <link id="k76imcg9" targetId="k88bxwah"/>
+                        <events>
+                           <catch faultField="faultInfo" id="k884y0lr" interrupting="true">
+                              <link id="k884y0lw" targetId="k884y0lx" type="containerLink"/>
+                           </catch>
+                        </events>
+                     </eventContainer>
+                     <eventContainer id="k88bxwah">
+                        <service id="k76imcfs">
+                           <title>Index</title>
+                           <serviceName>Index</serviceName>
+                           <serviceGUID/>
+                           <serviceInput>
+                              <parameter name="jobInstanceId" source="field" updatable="true">input.jobInstanceIdValue</parameter>
+                           </serviceInput>
+                        </service>
+                        <flow id="k88bxwaj">
+                           <link id="k88bxwak" targetId="k88bxwah" type="containerLink"/>
+                        </flow>
+                        <flow id="k88bxwam">
+                           <throw id="k88bxwaw">
+                              <title>Throw 4</title>
+                              <throwInput>
+                                 <parameter name="code" source="constant" updatable="true">CAI_FI_004</parameter>
+                                 <parameter name="detail" source="constant" updatable="true">Index step failed</parameter>
+                                 <parameter name="reason" source="field" updatable="true">output.faultInfo[1]/reason</parameter>
+                              </throwInput>
+                           </throw>
+                        </flow>
+                        <link id="k88bxwai" targetId="k88bxwaj" type="containerLink"/>
+                        <link id="k7csteq0" targetId="k88bxwb5"/>
+                        <events>
+                           <catch faultField="faultInfo" id="k88bxwag" interrupting="true">
+                              <link id="k88bxwal" targetId="k88bxwam" type="containerLink"/>
+                           </catch>
+                        </events>
+                     </eventContainer>
+                     <eventContainer id="k88bxwb5">
+                        <service id="k7cstepz">
+                           <title>Execute Match Tokenize</title>
+                           <serviceName>MatchIndex</serviceName>
+                           <serviceGUID/>
+                           <serviceInput>
+                              <parameter name="jobInstanceId" source="field" updatable="true">input.jobInstanceIdValue</parameter>
+                           </serviceInput>
+                        </service>
+                        <flow id="k88bxwb7">
+                           <link id="k88bxwb8" targetId="k88bxwb5" type="containerLink"/>
+                        </flow>
+                        <flow id="k88bxwba">
+                           <throw id="k88bxwbl">
+                              <title>Throw 5</title>
+                              <throwInput>
+                                 <parameter name="code" source="constant" updatable="true">CAI_FI_005</parameter>
+                                 <parameter name="detail" source="constant" updatable="true">Execute match tokenize failed</parameter>
+                                 <parameter name="reason" source="field" updatable="true">output.faultInfo[1]/reason</parameter>
+                              </throwInput>
+                           </throw>
+                        </flow>
+                        <link id="k88bxwb6" targetId="k88bxwb7" type="containerLink"/>
+                        <link id="k884y0lj" targetId="k76imcg3"/>
+                        <events>
+                           <catch faultField="faultInfo" id="k88bxwb4" interrupting="true">
+                              <link id="k88bxwb9" targetId="k88bxwba" type="containerLink"/>
+                           </catch>
+                        </events>
+                     </eventContainer>
+                     <end id="k76imcg3"/>
+                  </flow>
+                  <flow id="k76imcg4">
+                     <throw id="k88bxw9b">
+                        <title>Throw 1</title>
+                        <throwInput>
+                           <parameter name="code" source="constant" updatable="true">CAI_FI_001</parameter>
+                           <parameter name="detail" source="constant" updatable="true">File Import Staging failed</parameter>
+                           <parameter name="reason" source="constant" updatable="true">Check ingress logs</parameter>
+                        </throwInput>
+                     </throw>
+                  </flow>
+                  <link id="k76imcg6" targetId="k76imcfp" type="containerLink">
+                     <condition source="formula">
+                        <function name="string-equals">
+                           <arg name="left">{$output.status}</arg>
+                           <arg name="right">SUCCESS</arg>
+                        </function>
+                     </condition>
+                  </link>
+                  <link id="k76imcg7" targetId="k76imcg4" type="containerLink"/>
+               </container>
+            </flow>
+         </process>
+      </types1:Entry>
+      <types1:GUID>2aouPjxnqDWeKO4gxbEaEt</types1:GUID>
+      <types1:DisplayName>MDMFlowFileImportDQInternal</types1:DisplayName>
+   </types1:Item>
+   <types1:CurrentServerDateTime>2023-06-27T05:29:51.431Z</types1:CurrentServerDateTime>
+</aetgt:getResponse>

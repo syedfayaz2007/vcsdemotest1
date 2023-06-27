@@ -1,0 +1,198 @@
+<aetgt:getResponse xmlns:aetgt="http://schemas.active-endpoints.com/appmodules/repository/2010/10/avrepository.xsd"
+                   xmlns:types1="http://schemas.active-endpoints.com/appmodules/repository/2010/10/avrepository.xsd">
+   <types1:Item>
+      <types1:EntryId>RsPFn2H0Fdw8jIw-gt-7340-2023-06-14T03:15:28.702Z::pd.xml</types1:EntryId>
+      <types1:Name>MDMFlowFileImportDQ</types1:Name>
+      <types1:MimeType>application/xml+process</types1:MimeType>
+      <types1:Description/>
+      <types1:AppliesTo/>
+      <types1:Tags/>
+      <types1:VersionLabel>1.0</types1:VersionLabel>
+      <types1:State>CURRENT</types1:State>
+      <types1:ProcessGroup/>
+      <types1:CreatedBy>bundle-license-notifier</types1:CreatedBy>
+      <types1:CreationDate>2023-06-14T03:15:29Z</types1:CreationDate>
+      <types1:ModifiedBy/>
+      <types1:PublicationStatus>published</types1:PublicationStatus>
+      <types1:PublishedBy>bundle-license-notifier</types1:PublishedBy>
+      <types1:PublicationDate>2023-06-14T03:15:44Z</types1:PublicationDate>
+      <types1:PublishedContributionId>project:/spi.MDMFlowFileImportDQ/MDMFlowFileImportDQ.pd.xml</types1:PublishedContributionId>
+      <types1:AutosaveExists>false</types1:AutosaveExists>
+      <types1:Entry>
+         <process xmlns="http://schemas.active-endpoints.com/appmodules/screenflow/2010/10/avosScreenflow.xsd"
+                  xmlns:list="urn:activevos:spi:list:functions"
+                  displayName="MDMFlowFileImportDQ"
+                  name="MDMFlowFileImportDQ"
+                  overrideAPIName="true">
+            <appliesTo/>
+            <description/>
+            <tags/>
+            <generator>Informatica Process Designer 11</generator>
+            <input>
+               <parameter description=""
+                          name="jobInstance"
+                          required="true"
+                          type="reference">
+                  <options>
+                     <option name="referenceTo">$po:$any</option>
+                     <option name="required">false</option>
+                     <option name="isCopy">true</option>
+                  </options>
+               </parameter>
+               <parameter description=""
+                          name="skipCleanup"
+                          required="true"
+                          type="boolean">
+                  <options>
+                     <option name="defaultvalue">false</option>
+                     <option name="boolean_show_as">checkbox</option>
+                     <option name="required">false</option>
+                  </options>
+               </parameter>
+            </input>
+            <output>
+               <field description="" name="jobInstanceId" type="string">
+                  <options>
+                     <option name="required">false</option>
+                  </options>
+               </field>
+               <field description="" name="fault" type="string">
+                  <options>
+                     <option name="required">false</option>
+                  </options>
+               </field>
+            </output>
+            <tempFields>
+               <field description="" name="status" type="string">
+                  <options>
+                     <option name="required">false</option>
+                     <option name="initialvalue">SUCCESS</option>
+                  </options>
+               </field>
+            </tempFields>
+            <notes/>
+            <deployment suspendOnFault="false" tracingLevel="verbose">
+               <rest>
+                  <allowedRoles>
+                     <role>Admin</role>
+                     <role>Customer 360 Data Steward</role>
+                     <role>Customer 360 Analyst</role>
+                     <role>Customer 360 Manager</role>
+                     <role>Business360ProcessExecutor</role>
+                  </allowedRoles>
+               </rest>
+            </deployment>
+            <flow id="a">
+               <start id="b">
+                  <link id="k76ijvdh" targetId="k76ijvdg"/>
+               </start>
+               <service id="k76ijvdg">
+                  <title>Start File Import Job</title>
+                  <serviceName>StartFileImportJob</serviceName>
+                  <serviceGUID/>
+                  <serviceInput>
+                     <parameter name="jobInstance" source="field" updatable="true">input.jobInstance</parameter>
+                  </serviceInput>
+                  <link id="k76ijvee" targetId="k76ijved"/>
+               </service>
+               <milestone id="k76ijved">
+                  <title>Job Created</title>
+                  <httpStatus>202</httpStatus>
+                  <link id="k76ijvef" targetId="k71elqvd"/>
+               </milestone>
+               <eventContainer id="k71elqvd">
+                  <subflow id="k71elqt5">
+                     <title>MDMFlowFileImportDQInternal</title>
+                     <subflowGUID>2aouPjxnqDWeKO4gxbEaEt</subflowGUID>
+                     <subflowPath>MDMFlowFileImportDQInternal</subflowPath>
+                     <runForEach>false</runForEach>
+                     <input>
+                        <parameter name="jobInstanceIdValue" source="field" updatable="true">output.jobInstanceId</parameter>
+                        <parameter name="skipCleanup" source="field" updatable="true">input.skipCleanup</parameter>
+                     </input>
+                     <outputDef>
+                        <field name="fault" type="string">
+                           <options>
+                              <option name="required">false</option>
+                           </options>
+                        </field>
+                     </outputDef>
+                  </subflow>
+                  <flow id="k71elqvf">
+                     <link id="k71elqvg" targetId="k71elqvd" type="containerLink"/>
+                  </flow>
+                  <flow id="k71elqvi">
+                     <assignment id="k884zlu0">
+                        <title>Assignment to status</title>
+                        <operation source="constant" to="temp.status">FAILED</operation>
+                     </assignment>
+                     <link id="k884zluh" targetId="k71elqvd" type="containerLink"/>
+                  </flow>
+                  <link id="k71elqve" targetId="k71elqvf" type="containerLink"/>
+                  <link id="kh5xbbn1" targetId="k884zm8y"/>
+                  <events>
+                     <catch faultField="faultInfoFlow" id="k71elqv2" interrupting="true">
+                        <link id="k71elqvh" targetId="k71elqvi" type="containerLink"/>
+                     </catch>
+                  </events>
+               </eventContainer>
+               <container id="k884zm8y" type="exclusive">
+                  <title>status</title>
+                  <flow id="k884zm92">
+                     <service id="kh5xbbn2">
+                        <title>End Step</title>
+                        <serviceName>EndStep</serviceName>
+                        <serviceGUID/>
+                        <serviceInput>
+                           <parameter name="skipCleanup" source="field" updatable="true">input.skipCleanup</parameter>
+                           <parameter name="jobInstanceId" source="field" updatable="true">output.jobInstanceId</parameter>
+                           <parameter name="status" source="field" updatable="true">temp.status</parameter>
+                           <parameter name="processName" source="constant">MDMFlowFileImportDQ</parameter>
+                           <parameter name="error" source="field" updatable="true">output.faultInfoFlow[1]/reason</parameter>
+                        </serviceInput>
+                     </service>
+                     <link id="k884zm93" targetId="k884zm8y" type="containerLink"/>
+                  </flow>
+                  <flow id="k884zm95">
+                     <service id="kh5xbbln">
+                        <title>End Step</title>
+                        <serviceName>EndStep</serviceName>
+                        <serviceGUID/>
+                        <serviceInput>
+                           <parameter name="skipCleanup" source="field" updatable="true">input.skipCleanup</parameter>
+                           <parameter name="jobInstanceId" source="field" updatable="true">output.jobInstanceId</parameter>
+                           <parameter name="status" source="field" updatable="true">temp.status</parameter>
+                           <parameter name="processName" source="constant">MDMFlowFileImportDQ</parameter>
+                           <parameter name="error" source="field" updatable="true">output.faultInfoFlow[1]/reason</parameter>
+                        </serviceInput>
+                        <link id="kh5xbblo" targetId="k884zmbr"/>
+                     </service>
+                     <throw id="k884zmbr">
+                        <title>Throw 1</title>
+                        <throwInput>
+                           <parameter name="code" source="field" updatable="true">output.faultInfoFlow[1]/code</parameter>
+                           <parameter name="detail" source="field" updatable="true">output.faultInfoFlow[1]/detail</parameter>
+                           <parameter name="reason" source="field" updatable="true">output.faultInfoFlow[1]/reason</parameter>
+                        </throwInput>
+                     </throw>
+                  </flow>
+                  <link id="k884zm91" targetId="k884zm92" type="containerLink">
+                     <condition source="formula">
+                        <function name="string-equals">
+                           <arg name="left">{$temp.status}</arg>
+                           <arg name="right">SUCCESS</arg>
+                        </function>
+                     </condition>
+                  </link>
+                  <link id="k884zm94" targetId="k884zm95" type="containerLink"/>
+                  <link id="k884zm90" targetId="c"/>
+               </container>
+               <end id="c"/>
+            </flow>
+         </process>
+      </types1:Entry>
+      <types1:GUID>a6kXaa2rz0gb4pQiGCR7CC</types1:GUID>
+      <types1:DisplayName>MDMFlowFileImportDQ</types1:DisplayName>
+   </types1:Item>
+   <types1:CurrentServerDateTime>2023-06-27T05:29:51.53Z</types1:CurrentServerDateTime>
+</aetgt:getResponse>

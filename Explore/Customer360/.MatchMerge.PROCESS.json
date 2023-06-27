@@ -1,0 +1,24 @@
+{
+  "objectInfo" : {
+    "id" : "7Kqn7vH3wUtcfSTqeFJMqw",
+    "name" : "MatchMerge",
+    "type" : "PROCESS",
+    "metadata" : {
+      "modelVersion" : {
+        "major" : 1,
+        "minor" : 0
+      },
+      "repoInfo" : {
+        "repoHandle" : "Lx59clzHfSTu0kM-gt-5665-2023-06-14T03:15:27.603Z::pd.xml"
+      },
+      "contextAttributes" : null,
+      "additionalInfo" : {
+        "description" : "",
+        "contentType" : "application/json; charset=utf-8",
+        "documentState" : "VALID"
+      }
+    }
+  },
+  "dataFileExtension" : "xml",
+  "objectRefs" : [ ]
+}

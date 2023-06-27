@@ -1,0 +1,83 @@
+<aetgt:getResponse xmlns:aetgt="http://schemas.active-endpoints.com/appmodules/repository/2010/10/avrepository.xsd"
+                   xmlns:types1="http://schemas.active-endpoints.com/appmodules/repository/2010/10/avrepository.xsd">
+   <types1:Item>
+      <types1:EntryId>xeEaaaaaaaaaaaa-gt-5647-2023-06-14T03:15:27.375Z::pd.xml</types1:EntryId>
+      <types1:Name>CleanupResources</types1:Name>
+      <types1:MimeType>application/xml+process</types1:MimeType>
+      <types1:Description/>
+      <types1:AppliesTo/>
+      <types1:Tags/>
+      <types1:VersionLabel>1.0</types1:VersionLabel>
+      <types1:State>CURRENT</types1:State>
+      <types1:ProcessGroup/>
+      <types1:CreatedBy>bundle-license-notifier</types1:CreatedBy>
+      <types1:CreationDate>2023-06-14T03:15:27Z</types1:CreationDate>
+      <types1:ModifiedBy/>
+      <types1:PublicationStatus>published</types1:PublicationStatus>
+      <types1:PublishedBy>bundle-license-notifier</types1:PublishedBy>
+      <types1:PublicationDate>2023-06-14T03:15:31Z</types1:PublicationDate>
+      <types1:PublishedContributionId>project:/spi.CleanupResources/CleanupResources.pd.xml</types1:PublishedContributionId>
+      <types1:AutosaveExists>false</types1:AutosaveExists>
+      <types1:Entry>
+         <process xmlns="http://schemas.active-endpoints.com/appmodules/screenflow/2010/10/avosScreenflow.xsd"
+                  xmlns:list="urn:activevos:spi:list:functions"
+                  displayName="CleanupResources"
+                  name="CleanupResources">
+            <appliesTo/>
+            <description/>
+            <tags/>
+            <generator>Informatica Process Designer 11</generator>
+            <input>
+               <parameter description=""
+                          name="jobInstanceId"
+                          required="true"
+                          type="string">
+                  <options>
+                     <option name="required">false</option>
+                  </options>
+               </parameter>
+            </input>
+            <notes/>
+            <deployment suspendOnFault="false" tracingLevel="none">
+               <rest/>
+            </deployment>
+            <flow id="a">
+               <start id="b">
+                  <link id="jwc7lceh" targetId="jwc7lceg"/>
+               </start>
+               <service id="jwc7lceg">
+                  <title>Ingress Job Cleanup</title>
+                  <serviceName>cleanup-ingress-rest</serviceName>
+                  <serviceGUID/>
+                  <serviceInput>
+                     <parameter name="jobInstanceId" source="field" updatable="true">input.jobInstanceId</parameter>
+                  </serviceInput>
+                  <link id="jwc7lcei" targetId="jwc7lce2"/>
+               </service>
+               <service id="jwc7lce2">
+                  <title>BES Job Cleanup</title>
+                  <serviceName>cleanup-business-entity-batch</serviceName>
+                  <serviceGUID/>
+                  <serviceInput>
+                     <parameter name="jobInstanceId" source="field" updatable="true">input.jobInstanceId</parameter>
+                  </serviceInput>
+                  <link id="k37j5mzh" targetId="k37j5mzg"/>
+               </service>
+               <service id="k37j5mzg">
+                  <title>Index Job Cleanup</title>
+                  <serviceName>cleanup-index-rest</serviceName>
+                  <serviceGUID/>
+                  <serviceInput>
+                     <parameter name="jobInstanceId" source="field" updatable="true">input.jobInstanceId</parameter>
+                  </serviceInput>
+                  <link id="k37j5mzi" targetId="c"/>
+               </service>
+               <end id="c"/>
+            </flow>
+         </process>
+      </types1:Entry>
+      <types1:GUID>aD5F2e4eDGdk4KdfR4wmG1</types1:GUID>
+      <types1:DisplayName>CleanupResources</types1:DisplayName>
+   </types1:Item>
+   <types1:CurrentServerDateTime>2023-06-27T05:29:51.163Z</types1:CurrentServerDateTime>
+</aetgt:getResponse>

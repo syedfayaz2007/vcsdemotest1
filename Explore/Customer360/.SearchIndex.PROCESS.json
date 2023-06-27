@@ -1,0 +1,24 @@
+{
+  "objectInfo" : {
+    "id" : "6YAhg9uoQdEgUhj3sG1Zo3",
+    "name" : "SearchIndex",
+    "type" : "PROCESS",
+    "metadata" : {
+      "modelVersion" : {
+        "major" : 1,
+        "minor" : 0
+      },
+      "repoInfo" : {
+        "repoHandle" : "V0HnJKoJBUhtyco-gt-5675-2023-06-14T03:15:27.68Z::pd.xml"
+      },
+      "contextAttributes" : null,
+      "additionalInfo" : {
+        "description" : "",
+        "contentType" : "application/json; charset=utf-8",
+        "documentState" : "VALID"
+      }
+    }
+  },
+  "dataFileExtension" : "xml",
+  "objectRefs" : [ ]
+}

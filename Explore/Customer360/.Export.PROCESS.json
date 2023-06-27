@@ -1,0 +1,24 @@
+{
+  "objectInfo" : {
+    "id" : "4zeHsP8Jeo1dblQOcP9MY1",
+    "name" : "Export",
+    "type" : "PROCESS",
+    "metadata" : {
+      "modelVersion" : {
+        "major" : 1,
+        "minor" : 0
+      },
+      "repoInfo" : {
+        "repoHandle" : "UPAZf5kck8jKBme-gt-5657-2023-06-14T03:15:27.46Z::pd.xml"
+      },
+      "contextAttributes" : null,
+      "additionalInfo" : {
+        "description" : "",
+        "contentType" : "application/json; charset=utf-8",
+        "documentState" : "VALID"
+      }
+    }
+  },
+  "dataFileExtension" : "xml",
+  "objectRefs" : [ ]
+}

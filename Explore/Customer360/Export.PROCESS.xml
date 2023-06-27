@@ -1,0 +1,204 @@
+<aetgt:getResponse xmlns:aetgt="http://schemas.active-endpoints.com/appmodules/repository/2010/10/avrepository.xsd"
+                   xmlns:types1="http://schemas.active-endpoints.com/appmodules/repository/2010/10/avrepository.xsd">
+   <types1:Item>
+      <types1:EntryId>UPAZf5kck8jKBme-gt-5657-2023-06-14T03:15:27.46Z::pd.xml</types1:EntryId>
+      <types1:Name>Export</types1:Name>
+      <types1:MimeType>application/xml+process</types1:MimeType>
+      <types1:Description/>
+      <types1:AppliesTo/>
+      <types1:Tags/>
+      <types1:VersionLabel>1.0</types1:VersionLabel>
+      <types1:State>CURRENT</types1:State>
+      <types1:ProcessGroup/>
+      <types1:CreatedBy>bundle-license-notifier</types1:CreatedBy>
+      <types1:CreationDate>2023-06-14T03:15:27Z</types1:CreationDate>
+      <types1:ModifiedBy/>
+      <types1:PublicationStatus>published</types1:PublicationStatus>
+      <types1:PublishedBy>bundle-license-notifier</types1:PublishedBy>
+      <types1:PublicationDate>2023-06-14T03:15:34Z</types1:PublicationDate>
+      <types1:PublishedContributionId>project:/spi.Export/Export.pd.xml</types1:PublishedContributionId>
+      <types1:AutosaveExists>false</types1:AutosaveExists>
+      <types1:Entry>
+         <process xmlns="http://schemas.active-endpoints.com/appmodules/screenflow/2010/10/avosScreenflow.xsd"
+                  xmlns:list="urn:activevos:spi:list:functions"
+                  displayName="Export"
+                  name="Export"
+                  overrideAPIName="true">
+            <appliesTo/>
+            <description/>
+            <tags/>
+            <generator>Informatica Process Designer 11</generator>
+            <input>
+               <parameter description=""
+                          name="jobDefinitionId"
+                          required="true"
+                          type="string">
+                  <options>
+                     <option name="required">false</option>
+                  </options>
+               </parameter>
+               <parameter description="" name="runtimeParameters" type="objectlist">
+                  <options>
+                     <option name="referenceTo">$po:$any</option>
+                     <option hide="true" name="multiSelect">true</option>
+                     <option name="required">false</option>
+                     <option name="isCopy">true</option>
+                  </options>
+               </parameter>
+               <parameter description="" name="skipCleanup" type="boolean">
+                  <options>
+                     <option name="defaultvalue">true</option>
+                     <option name="boolean_show_as">checkbox</option>
+                     <option name="required">false</option>
+                  </options>
+               </parameter>
+            </input>
+            <output>
+               <field description="" name="jobInstanceId" type="string">
+                  <options>
+                     <option name="required">false</option>
+                  </options>
+               </field>
+               <field description="" name="fault" type="string">
+                  <options>
+                     <option name="required">false</option>
+                  </options>
+               </field>
+            </output>
+            <notes/>
+            <deployment suspendOnFault="false" tracingLevel="normal">
+               <rest>
+                  <allowedRoles>
+                     <role>Admin</role>
+                     <role>Designer</role>
+                     <role>Business360ProcessExecutor</role>
+                  </allowedRoles>
+               </rest>
+            </deployment>
+            <flow id="a">
+               <start id="b">
+                  <link id="kguvxthv" targetId="kguvxthu"/>
+               </start>
+               <service id="kguvxthu">
+                  <title>Start Job</title>
+                  <serviceName>StartJob</serviceName>
+                  <serviceGUID/>
+                  <serviceInput>
+                     <parameter name="jobDefinitionId" source="field" updatable="true">input.jobDefinitionId</parameter>
+                     <parameter name="runtimeParameters" source="field" updatable="true">input.runtimeParameters</parameter>
+                  </serviceInput>
+                  <link id="khbk4zqr" targetId="khbk4zqq"/>
+               </service>
+               <milestone id="khbk4zqq">
+                  <title>Send Job Response</title>
+                  <httpStatus>202</httpStatus>
+                  <link id="khbk4zqs" targetId="kguvxtia"/>
+               </milestone>
+               <eventContainer id="kguvxtia">
+                  <service id="kguvxti3">
+                     <title>Stage</title>
+                     <serviceName>Egress</serviceName>
+                     <serviceGUID/>
+                     <serviceInput>
+                        <parameter name="jobInstanceId" source="field" updatable="true">output.jobInstanceId</parameter>
+                     </serviceInput>
+                  </service>
+                  <flow id="kguvxtic">
+                     <eventContainer id="kguvxtkb">
+                        <service id="kguvxtjz">
+                           <title>Extract</title>
+                           <serviceName>ETL</serviceName>
+                           <serviceGUID/>
+                           <serviceInput>
+                              <parameter name="jobInstanceId" source="field" updatable="true">output.jobInstanceId</parameter>
+                              <parameter name="connectionType" source="constant">SOURCE_CONNECTION</parameter>
+                           </serviceInput>
+                        </service>
+                        <flow id="kguvxtkd">
+                           <service id="kguvxtnk">
+                              <title>End Job</title>
+                              <serviceName>EndStep</serviceName>
+                              <serviceGUID/>
+                              <serviceInput>
+                                 <parameter name="skipCleanup" source="field" updatable="true">input.skipCleanup</parameter>
+                                 <parameter name="jobInstanceId" source="field" updatable="true">output.jobInstanceId</parameter>
+                                 <parameter name="status" source="constant">SUCCESS</parameter>
+                                 <parameter name="processName" source="constant">Export</parameter>
+                              </serviceInput>
+                           </service>
+                           <link id="kguvxtke" targetId="kguvxtkb" type="containerLink"/>
+                        </flow>
+                        <flow id="kguvxtkg">
+                           <service id="kguvxtkn">
+                              <title>End Job</title>
+                              <serviceName>EndStep</serviceName>
+                              <serviceGUID/>
+                              <serviceInput>
+                                 <parameter name="skipCleanup" source="field" updatable="true">input.skipCleanup</parameter>
+                                 <parameter name="jobInstanceId" source="field" updatable="true">output.jobInstanceId</parameter>
+                                 <parameter name="status" source="constant">FAILED</parameter>
+                                 <parameter name="processName" source="constant">Export</parameter>
+                                 <parameter name="step" source="constant">ETL</parameter>
+                                 <parameter name="error" source="field" updatable="true">output.faultInfo[1]/reason</parameter>
+                              </serviceInput>
+                              <link id="kguvxtmr" targetId="kguvxtmq"/>
+                           </service>
+                           <throw id="kguvxtmq">
+                              <title>Throw 2</title>
+                              <throwInput>
+                                 <parameter name="code" source="field" updatable="true">output.faultInfo[1]/code</parameter>
+                                 <parameter name="detail" source="field" updatable="true">output.faultInfo[1]/detail</parameter>
+                                 <parameter name="reason" source="field" updatable="true">output.faultInfo[1]/reason</parameter>
+                              </throwInput>
+                           </throw>
+                        </flow>
+                        <link id="kguvxtkc" targetId="kguvxtkd" type="containerLink"/>
+                        <events>
+                           <catch faultField="faultInfo" id="kguvxtk2" interrupting="true">
+                              <link id="kguvxtkf" targetId="kguvxtkg" type="containerLink"/>
+                           </catch>
+                        </events>
+                     </eventContainer>
+                     <link id="kguvxtid" targetId="kguvxtia" type="containerLink"/>
+                  </flow>
+                  <flow id="kguvxtif">
+                     <service id="kguvxtil">
+                        <title>End Job</title>
+                        <serviceName>EndStep</serviceName>
+                        <serviceGUID/>
+                        <serviceInput>
+                           <parameter name="skipCleanup" source="field" updatable="true">input.skipCleanup</parameter>
+                           <parameter name="jobInstanceId" source="field" updatable="true">output.jobInstanceId</parameter>
+                           <parameter name="status" source="constant">FAILED</parameter>
+                           <parameter name="processName" source="constant">Export</parameter>
+                           <parameter name="step" source="constant">Egress</parameter>
+                           <parameter name="error" source="field" updatable="true">output.faultInfo[1]/reason</parameter>
+                        </serviceInput>
+                        <link id="kguvxtjv" targetId="kguvxtju"/>
+                     </service>
+                     <throw id="kguvxtju">
+                        <title>Throw 1</title>
+                        <throwInput>
+                           <parameter name="code" source="field" updatable="true">output.faultInfo[1]/code</parameter>
+                           <parameter name="detail" source="field" updatable="true">output.faultInfo[1]/detail</parameter>
+                           <parameter name="reason" source="field" updatable="true">output.faultInfo[1]/reason</parameter>
+                        </throwInput>
+                     </throw>
+                  </flow>
+                  <link id="kguvxtib" targetId="kguvxtic" type="containerLink"/>
+                  <link id="kguvxti5" targetId="c"/>
+                  <events>
+                     <catch faultField="faultInfo" id="kguvxti7" interrupting="true">
+                        <link id="kguvxtie" targetId="kguvxtif" type="containerLink"/>
+                     </catch>
+                  </events>
+               </eventContainer>
+               <end id="c"/>
+            </flow>
+         </process>
+      </types1:Entry>
+      <types1:GUID>4zeHsP8Jeo1dblQOcP9MY1</types1:GUID>
+      <types1:DisplayName>Export</types1:DisplayName>
+   </types1:Item>
+   <types1:CurrentServerDateTime>2023-06-27T05:29:51.099Z</types1:CurrentServerDateTime>
+</aetgt:getResponse>
